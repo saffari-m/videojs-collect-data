@@ -75,7 +75,7 @@ class Handler {
   }
   /**
    * This method request to distination server with information come from 'action' parameter on option.
-   * 
+   *
    * @param {*} body body of request
    */
   callAction(body) {
@@ -135,11 +135,11 @@ class Handler {
   }
 
   onLoadedMetaData() {
-    this.player.on('loadedmetadata', () => { });
+    this.player.on('loadedmetadata', () => {});
   }
 
   onPlaying() {
-    this.player.one('play', () => { });
+    this.player.one('play', () => {});
   }
 
   sameFunctionEvents() {
