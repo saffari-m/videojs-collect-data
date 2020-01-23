@@ -1,4 +1,4 @@
-# videojs-collect-data
+# collect-data-plugin
 
 Collect data from client on during watching movie.
 
@@ -9,12 +9,12 @@ Collect data from client on during watching movie.
 ## Installation
 
 ```sh
-npm install --save @filmgardi/videojs-collect-data
+npm install --save @filmgardi/collect-data-plugin
 ```
 
 ## Usage
 
-To include videojs-collect-data on your website or web application, use any of the following methods.
+To include collect-data-plugin on your website or web application, use any of the following methods.
 
 ### `<script>` Tag
 
@@ -22,7 +22,7 @@ This is the simplest case. Get the script in whatever way you prefer and include
 
 ```html
 <script src="//path/to/video.min.js"></script>
-<script src="//path/to/videojs-collect-data.min.js"></script>
+<script src="//path/to/collect-data-plugin.min.js"></script>
 <script>
   var player = videojs('my-video');
 
@@ -32,7 +32,7 @@ This is the simplest case. Get the script in whatever way you prefer and include
 
 ### Browserify/CommonJS
 
-When using with Browserify, install videojs-collect-data via npm and `require` the plugin as you would any other module.
+When using with Browserify, install collect-data-plugin via npm and `require` the plugin as you would any other module.
 
 ```js
 var videojs = require('video.js');
@@ -40,7 +40,7 @@ var videojs = require('video.js');
 // The actual plugin function is exported by this module, but it is also
 // attached to the `Player.prototype`; so, there is no need to assign it
 // to a variable.
-require('@filmgardi/videojs-collect-data');
+require('@filmgardi/collect-data-plugin');
 
 var player = videojs('my-video');
 
@@ -52,7 +52,7 @@ player.collectData();
 When using with RequireJS (or another AMD library), get the script in whatever way you prefer and `require` the plugin as you normally would:
 
 ```js
-require(['video.js', '@filmgardi/videojs-collect-data'], function(videojs) {
+require(['video.js', '@filmgardi/collect-data-plugin'], function(videojs) {
   var player = videojs('my-video');
 
   player.collectData();
