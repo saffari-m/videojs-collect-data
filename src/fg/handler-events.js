@@ -17,7 +17,9 @@ class Handler {
   constructor(player) {
     this.player = player;
     this.isPaused = true;
-    this.options = {};
+    this.options = {
+      action: ActionModel
+    };
   }
 
   /**
@@ -71,16 +73,30 @@ class Handler {
       property: body
     };
   }
-  sendToKafka(body) {
+  /**
+   * This method request to distination server with information come from 'action' parameter on option.
+   * 
+   * @param {*} body body of request
+   */
+  callAction(body) {
     const data = this.getKafkaModel(body);
+    const { action } = this.options;
 
-    fetch(consts.KAFKA_URL, {
-      method: 'POST',
+    videojs.xhr({
+      url: action.url,
+      method: action.method,
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data ? data : {})
     });
+    // fetch(consts.KAFKA_URL, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data ? data : {})
+    // });
   }
   onKafkaError(minutes, halfTimeOfVideo) {
     // daqiqe_post(minutes, get_nid_uid(), halfTimeOfVideo);
@@ -119,11 +135,11 @@ class Handler {
   }
 
   onLoadedMetaData() {
-    this.player.on('loadedmetadata', () => {});
+    this.player.on('loadedmetadata', () => { });
   }
 
   onPlaying() {
-    this.player.one('play', () => {});
+    this.player.one('play', () => { });
   }
 
   sameFunctionEvents() {
