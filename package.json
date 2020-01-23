@@ -1,0 +1,103 @@
+{
+  "name": "@filmgardi/collect-data",
+  "version": "0.0.1",
+  "description": "Collect data from client on during watching movie.",
+  "main": "dist/collect-data.cjs.js",
+  "module": "dist/collect-data.es.js",
+  "generator-videojs-plugin": {
+    "version": "7.6.3"
+  },
+  "browserslist": [
+    "defaults",
+    "ie 11"
+  ],
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "npm-run-all -p build:*",
+    "build:js": "rollup -c scripts/rollup.config.js",
+    "clean": "shx rm -rf ./dist ./test/dist",
+    "postclean": "shx mkdir -p ./dist ./test/dist",
+    "docs": "npm-run-all docs:*",
+    "docs:api": "jsdoc src -g plugins/markdown -r -d docs/api",
+    "docs:toc": "doctoc --notitle README.md",
+    "lint": "npm-run-all lint:*",
+    "lint:js": "prettier './src/**/*.js' --write",
+    "lint:test": "prettier './test/**/*.js' --write",
+    "lint:basic": "vjsstandard",
+    "server": "karma start scripts/karma.conf.js --singleRun=false --auto-watch",
+    "start": "npm-run-all -p server watch",
+    "pretest": "npm-run-all lint build",
+    "test": "npm-run-all test:*",
+    "posttest": "shx cat test/dist/coverage/text.txt",
+    "test:unit": "karma start scripts/karma.conf.js",
+    "test:verify": "vjsverify --verbose",
+    "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
+    "preversion": "npm test",
+    "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
+    "watch": "npm-run-all -p watch:*",
+    "watch:js": "npm run build:js -- -w",
+    "prepublishOnly": "npm-run-all build test:verify",
+    "copy:dir": "shx cp -rf /home/mohamad/Work/Project/plugins/filmgardi/collect-data/dist/collect-data.cjs.js  /home/mohamad/Work/example/filmgardi/fg-video/src/"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "keywords": [
+    "videojs",
+    "videojs-plugin",
+    "filmgardi",
+    "coolect-data"
+  ],
+  "author": "m-saffari <mohamadsaffari90@gmail.com>",
+  "license": "MIT",
+  "vjsstandard": {
+    "ignore": [
+      "dist",
+      "docs",
+      "test/dist"
+    ]
+  },
+  "files": [
+    "CONTRIBUTING.md",
+    "dist/",
+    "docs/",
+    "index.html",
+    "scripts/",
+    "src/",
+    "test/"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "vjsstandard --fix",
+      "git add"
+    ],
+    "README.md": [
+      "doctoc --notitle",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "clientjs": "^0.1.11",
+    "global": "^4.3.2",
+    "video.js": "^6 || ^7"
+  },
+  "devDependencies": {
+    "@videojs/generator-helpers": "~1.0.0",
+    "jsdoc": "BrandonOCasey/jsdoc#feat/plugin-from-cli",
+    "karma": "^4.0.0",
+    "prettier": "^1.19.1",
+    "rollup": "^1.10.0",
+    "sinon": "^7.2.2",
+    "videojs-generate-karma-config": "~5.2.0",
+    "videojs-generate-rollup-config": "~3.1.0",
+    "videojs-generator-verify": "~1.2.0",
+    "videojs-standard": "^8.0.3"
+  }
+}
