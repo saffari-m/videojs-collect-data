@@ -309,7 +309,7 @@ class Handler {
   }
 
   onLoadedMetaData() {
-    this.player.on('loadedmetadata', () => { });
+    this.player.on('loadedmetadata', () => {});
   }
 
   onPlaying() {

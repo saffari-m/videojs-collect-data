@@ -109,7 +109,8 @@ class FgObject {
    * @return {*} result
    */
   parse(str) {
-    return Function(`'use strict'; return (${str})`)();
+    return str;
+    // return Function(`'use strict'; return (${str})`)();
   }
 
   /**
