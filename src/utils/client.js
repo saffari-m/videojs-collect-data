@@ -1,5 +1,5 @@
-import ClientJS from 'clientjs';
 import { config } from '../const/index';
+import window from 'global/window';
 
 /**
  * An advanced Client info.
@@ -10,13 +10,14 @@ class Client {
    * create ClientJs instance.
    */
   constructor() {
-    // this.clientJs = new ClientJS();
+    if (window.ClientJS) {
+      const { ClientJS } = window;
+
+      this.clientJs = new ClientJS();
+    }
   }
 
   get(methodName) {
-    if (!this.clientJs)
-      this.clientJs = new ClientJS();
-      
     if (this.clientJs) {
       if (this.clientJs[methodName]) {
         return this.clientJs[methodName]();
@@ -32,18 +33,13 @@ class Client {
    * @return {Object} return client info object { os:@int , osVersion:@int , market:@string , marketVersion:@string }
    */
   getBasicInfo() {
-    if (!this.clientJs)
-      this.clientJs = new ClientJS();
-
     if (this.clientJs) {
       const { clientJs } = this;
 
-      const osInfo = clientJs.getOS();
-
       return {
         client: {
-          os: osInfo ? osInfo.name : '',
-          osVersion: osInfo ? osInfo.version : '',
+          os: clientJs.getOS ? clientJs.getOS() : '',
+          osVersion: clientJs.getOSVersion ? clientJs.getOSVersion() : '',
           market: config.APP_TYPE,
           marketVersion: config.APP_VERSION
         }

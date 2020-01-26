@@ -55,7 +55,7 @@ class Handler {
     if (!FgObject.equalArray(options.altAction, ActionModel)) {
       throw new TypeError("action is not valid model for initialize 'CollectData' plugin.");
     }
-
+    // TODO: clone options problem
     this.options = options;
   }
   /**
@@ -285,7 +285,7 @@ class Handler {
           headers: this.getHeaders(action.headers),
           body: JSON.stringify(action.body ? this.getBody(action) : {})
         },
-        function (err, resp, _body) {
+        function(err, resp, _body) {
           if (resp.statusCode !== 200) {
             _this.callAltAction();
             if (err.message || err.name) {
@@ -317,7 +317,7 @@ class Handler {
       let time = 0;
       const me = this;
 
-      window.setInterval(function () {
+      window.setInterval(function() {
         if (!me.isPaused) {
           time++;
           if (time % 60 === 0) {

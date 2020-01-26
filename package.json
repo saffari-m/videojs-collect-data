@@ -37,7 +37,7 @@
     "watch": "npm-run-all -p watch:*",
     "watch:js": "npm run build:js -- -w",
     "prepublishOnly": "npm-run-all build test:verify",
-    "copy:dir": "shx cp -rf /home/mohamad/Work/Project/plugins/filmgardi/collect-data/dist/collect-data-plugin.cjs.js  /home/mohamad/Work/example/filmgardi/fg-video/src/"
+    "copy:dir": "shx cp -rf dist/collect-data-plugin.cjs.js  ../test-env-project/src/"
   },
   "engines": {
     "node": ">=8",
