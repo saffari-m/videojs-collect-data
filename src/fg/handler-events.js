@@ -28,6 +28,16 @@ class Handler {
   }
 
   /**
+   * This get clone object from options
+   *
+   * @return clone object of options
+   */
+  getOptions() {
+    const options = Object.assign({}, this.options);
+
+    return options;
+  }
+  /**
    * This method set plugin options in Handler properties
    *
    * @param {*} options CollectData option for initialize.
@@ -134,7 +144,7 @@ class Handler {
    * @return {*} object of http header
    *
    */
-  getHeaders(headers) {
+  getHeaders(headers = {}) {
     const _headers = {
       'Content-Type': 'application/json'
     };
@@ -159,16 +169,18 @@ class Handler {
    * @return {*} filled property with true value
    */
   getParamsValue(params) {
-    Object.keys(params).map(property => {
-      const _type = typeof params[property];
+    const _params = Object.assign({}, params);
+
+    Object.keys(_params).map(property => {
+      const _type = typeof _params[property];
 
       if (_type === 'object') {
-        params[property] = this.getParamsValue(params[property]);
+        _params[property] = this.getParamsValue(_params[property]);
       } else if (_type === 'string') {
-        params[property] = this.calculateValue(params[property], params);
+        _params[property] = this.calculateValue(_params[property], _params);
       }
     });
-    return params;
+    return _params;
   }
 
   /**
@@ -182,7 +194,7 @@ class Handler {
   getBody(action) {
     const { body } = action;
 
-    const { requiredParameter } = this.options;
+    const { requiredParameter } = this.getOptions();
 
     if (body && body.params) {
       const opt = {
@@ -207,7 +219,7 @@ class Handler {
         }
       }
       // clone params object
-      let _params = body.params;
+      let _params = Object.assign({}, body.params);
       let targetParamName = null;
 
       if (opt.hasTargetParam) {
@@ -251,17 +263,32 @@ class Handler {
    * @param {*} body body of request
    */
   callAltAction() {
-    const { altAction } = this.options;
+    const { altAction } = this.getOptions();
 
     try {
       if (altAction && altAction.length > 0) {
         altAction.map(action => {
-          videojs.xhr({
-            url: action.url,
-            method: action.method,
-            headers: this.getHeaders(action.headers),
-            body: JSON.stringify(action.body ? this.getBody(action) : {})
-          });
+          try {
+            videojs.xhr(
+              {
+                url: action.url,
+                method: action.method,
+                headers: this.getHeaders(action.headers),
+                body: JSON.stringify(action.body ? this.getBody(action) : {})
+              },
+              function(err, resp, _body) {
+                if (resp.statusCode !== 200 || resp.statusCode !== 201) {
+                  if (err) {
+                    videojs.log('Some error on call action method');
+                  } else {
+                    videojs.log('Some error on call action method');
+                  }
+                }
+              }
+            );
+          } catch (e) {
+            videojs.log(`failed on call ${action.name} request.`);
+          }
         });
       }
     } catch (e) {
@@ -274,7 +301,7 @@ class Handler {
    *
    */
   callAction() {
-    const { action } = this.options;
+    const { action } = this.getOptions();
     const _this = this;
 
     try {
@@ -288,7 +315,7 @@ class Handler {
         function(err, resp, _body) {
           if (resp.statusCode !== 200) {
             _this.callAltAction();
-            if (err.message || err.name) {
+            if (err) {
               videojs.log('Some error on call action method');
             }
           }
