@@ -127,7 +127,7 @@ class FgObject {
   /**
    * By passing a string to the Function constructor, you are requiring the engine to parse that string much in the way it has to when you call the eval function.
    *
-   * @param {*} str 
+   * @param {*} str
    *
    * @return {*} result
    */

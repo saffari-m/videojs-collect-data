@@ -36,6 +36,7 @@ class CollectData extends Plugin {
 
     handler.setOptions(options);
     this.player.ready(() => {
+      this.player.addClass('vjs-collect-data');
       handler.init();
     });
   }

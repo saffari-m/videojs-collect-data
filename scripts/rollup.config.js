@@ -5,9 +5,7 @@ const generate = require('videojs-generate-rollup-config');
 const options = {
   externals(defaults) {
     return {
-      browser: defaults.browser.concat([
-        'ClientJS'
-      ]),
+      browser: defaults.browser.concat(['ClientJS']),
       module: defaults.module.concat(['clientjs']),
       test: defaults.test.concat([])
     };
