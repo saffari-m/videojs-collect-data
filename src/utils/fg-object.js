@@ -145,12 +145,12 @@ class FgObject {
    * @return {*} value of property
    */
   calculateParam(property, params) {
-    if (property.startsWith('FG-')) {
+    if (property.indexOf('FG-') === 0) {
       let propertyName = '';
 
-      if (property.startsWith('FG-VIDEO_') || property.startsWith('FG-DEVICE_')) {
+      if (property.indexOf('FG-VIDEO_') === 0 || property.indexOf('FG-DEVICE_') === 0) {
         propertyName = property.replace('FG-VIDEO_', '').replace('FG-DEVICE_', '');
-      } else {
+      } else if (property.indexOf('FG-METHOD') === 0) {
         let formula = this.getFormula(property);
 
         const parameterArray = this.getParameters(formula);
