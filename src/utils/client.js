@@ -1,5 +1,15 @@
-import ClientJS from 'clientjs';
 import { config } from '../const/index';
+import window from 'global/window';
+import ClientJs from 'clientjs';
+
+const getClientJS = () => {
+  if (window.ClientJS) {
+    const { ClientJS } = window;
+
+    return new ClientJS();
+  }
+  return new ClientJs();
+};
 
 /**
  * An advanced Client info.
@@ -10,9 +20,19 @@ class Client {
    * create ClientJs instance.
    */
   constructor() {
-    this.clientJs = new ClientJS();
+    this.clientJs = getClientJS();
   }
 
+  get(methodName) {
+    if (!this.clientJs) {
+      this.clientJs = getClientJS();
+    }
+    if (this.clientJs) {
+      if (this.clientJs[methodName]) {
+        return this.clientJs[methodName]();
+      }
+    }
+  }
   /**
    * Get user basic info.
    * ------------------
@@ -23,13 +43,15 @@ class Client {
    */
   getBasicInfo() {
     if (this.clientJs) {
-      const clientjs = this.clientJs;
+      const { clientJs } = this;
 
       return {
-        os: clientjs.getOS(),
-        osVersion: parseInt(clientjs.getOSVersion(), 10),
-        market: config.APP_TYPE,
-        marketVersion: config.APP_VERSION
+        client: {
+          os: clientJs.getOS ? clientJs.getOS() : '',
+          osVersion: clientJs.getOSVersion ? clientJs.getOSVersion() : '',
+          market: config.APP_TYPE,
+          marketVersion: config.APP_VERSION
+        }
       };
     }
   }

@@ -2,7 +2,15 @@ const generate = require('videojs-generate-rollup-config');
 
 // see https://github.com/videojs/videojs-generate-rollup-config
 // for options
-const options = {};
+const options = {
+  externals(defaults) {
+    return {
+      browser: defaults.browser.concat(['ClientJS']),
+      module: defaults.module.concat(['clientjs']),
+      test: defaults.test.concat([])
+    };
+  }
+};
 const config = generate(options);
 
 // Add additonal builds/customization here!

@@ -1,9 +1,9 @@
 {
-  "name": "@filmgardi/collect-data",
-  "version": "0.0.1",
+  "name": "@filmgardi/videojs-collect-data",
+  "version": "1.0.1",
   "description": "Collect data from client on during watching movie.",
-  "main": "dist/collect-data.cjs.js",
-  "module": "dist/collect-data.es.js",
+  "main": "dist/videojs-collect-data.cjs.js",
+  "module": "dist/videojs-collect-data.es.js",
   "generator-videojs-plugin": {
     "version": "7.6.3"
   },
@@ -37,7 +37,7 @@
     "watch": "npm-run-all -p watch:*",
     "watch:js": "npm run build:js -- -w",
     "prepublishOnly": "npm-run-all build test:verify",
-    "copy:dir": "shx cp -rf /home/mohamad/Work/Project/plugins/filmgardi/collect-data/dist/collect-data.cjs.js  /home/mohamad/Work/example/filmgardi/fg-video/src/"
+    "copy": "shx cp -rf dist/videojs-collect-data.cjs.js  ../test-env-project/src/"
   },
   "engines": {
     "node": ">=8",
