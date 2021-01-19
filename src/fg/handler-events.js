@@ -30,7 +30,7 @@ class Handler {
   /**
    * This get clone object from options
    *
-   * @return clone object of options
+   * @return {*} clone object of options
    */
   getOptions() {
     const options = Object.assign({}, this.options);
@@ -65,7 +65,6 @@ class Handler {
     if (!FgObject.equalArray(options.altAction, ActionModel)) {
       throw new TypeError("action is not valid model for initialize 'CollectData' plugin.");
     }
-    // TODO: clone options problem
     this.options = options;
   }
   /**
@@ -154,7 +153,14 @@ class Handler {
     }
     return headers;
   }
-
+  /**
+   * Calculate value
+   *
+   * @param {*} propertyValue propertyValue
+   * @param {*} params params
+   *
+   * @return {*} calculated value
+   */
   calculateValue(propertyValue, params) {
     let value = propertyValue;
 
@@ -269,23 +275,28 @@ class Handler {
       if (altAction && altAction.length > 0) {
         altAction.map(action => {
           try {
-            videojs.xhr(
-              {
+            if (action) {
+              const config = {
                 url: action.url,
                 method: action.method,
                 headers: this.getHeaders(action.headers),
                 body: JSON.stringify(action.body ? this.getBody(action) : {})
-              },
-              function(err, resp, _body) {
-                if (resp.statusCode !== 200 || resp.statusCode !== 201) {
-                  if (err) {
-                    videojs.log('Some error on call action method');
-                  } else {
-                    videojs.log('Some error on call action method');
+              };
+
+              if (action.call && typeof action.call === 'function') {
+                action.call(config);
+              } else {
+                videojs.xhr(config, function(err, resp, _body) {
+                  if (resp.statusCode !== 200 || resp.statusCode !== 201) {
+                    if (err) {
+                      videojs.log('Some error on call action method');
+                    } else {
+                      videojs.log('Some error on call action method');
+                    }
                   }
-                }
+                });
               }
-            );
+            }
           } catch (e) {
             videojs.log(`failed on call ${action.name} request.`);
           }
@@ -302,60 +313,87 @@ class Handler {
    */
   callAction() {
     const { action } = this.getOptions();
-    const _this = this;
+    const that = this;
 
     try {
-      videojs.xhr(
-        {
+      if (action) {
+        const config = {
           url: action.url,
           method: action.method,
           headers: this.getHeaders(action.headers),
           body: JSON.stringify(action.body ? this.getBody(action) : {})
-        },
-        function(err, resp, _body) {
-          if (resp.statusCode !== 200) {
-            _this.callAltAction();
-            if (err) {
-              videojs.log('Some error on call action method');
-            }
+        };
+
+        if (action.call && typeof action.call === 'function') {
+          try {
+            action.call(config).catch(function(e) {
+              that.callAltAction();
+            });
+          } catch (e) {
+            action.call(config);
           }
+        } else {
+          videojs.xhr(config, function(err, resp, _body) {
+            if (resp.statusCode !== 200) {
+              that.callAltAction();
+              if (err) {
+                videojs.log('Some error on call action method');
+              }
+            }
+          });
         }
-      );
+      }
     } catch (e) {
       this.callAltAction();
     }
   }
   // #endregion
 
+  /**
+   * Pause send data
+   * ----------------------
+   */
   pauseSend() {
     this.isPaused = true;
   }
-
+  /**
+   * Resume send data
+   * ----------------------
+   */
   resumeSend() {
     this.isPaused = false;
   }
-
+  /**
+   * on Load meta data
+   * ----------------------
+   */
   onLoadedMetaData() {
     this.player.on('loadedmetadata', () => {});
   }
-
+  /**
+   * on Playing
+   * ----------------------
+   */
   onPlaying() {
     this.player.one('play', () => {
       let time = 0;
-      const me = this;
+      const that = this;
 
       window.setInterval(function() {
-        if (!me.isPaused) {
+        if (!that.isPaused) {
           time++;
           if (time % 60 === 0) {
             time = 0;
-            me.callAction();
+            that.callAction();
           }
         }
       }, this.options.intervalTime);
     });
   }
-
+  /**
+   * Same Function Events
+   * ----------------------
+   */
   sameFunctionEvents() {
     this.multiEvent(['ended', 'waiting'], props => {
       if (props.type === 'ended') {

@@ -33,3 +33,7 @@ docs/api/
 test/dist/
 .eslintcache
 .yo-rc.json
+
+package-lock.json
+./package-lock.json
+.package-lock.json
