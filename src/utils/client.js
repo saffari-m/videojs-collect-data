@@ -46,12 +46,10 @@ class Client {
       const { clientJs } = this;
 
       return {
-        client: {
-          os: clientJs.getOS ? clientJs.getOS() : '',
-          osVersion: clientJs.getOSVersion ? clientJs.getOSVersion() : '',
-          market: config.APP_TYPE,
-          marketVersion: config.APP_VERSION
-        }
+        os: clientJs.getOS ? clientJs.getOS() : '',
+        osVersion: clientJs.getOSVersion ? clientJs.getOSVersion() : '',
+        market: config.APP_TYPE,
+        marketVersion: config.APP_VERSION
       };
     }
   }
