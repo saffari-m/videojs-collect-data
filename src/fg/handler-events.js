@@ -24,7 +24,18 @@ class Handler {
       action: ActionModel,
       altAction: []
     };
+    this.intervalId = -1;
     this.fgObject = new FgObject(player);
+  }
+
+  setIntervalId(id) {
+    if (id === 'undefined' || id === null) {
+      throw new TypeError('Interval id is not valid.');
+    }
+    this.intervalId = id;
+  }
+  getIntervalId() {
+    return this.intervalId;
   }
 
   /**
@@ -382,7 +393,7 @@ class Handler {
       let time = 0;
       const that = this;
 
-      window.setInterval(function() {
+      const intervalId = window.setInterval(function() {
         if (!that.isPaused) {
           time++;
           if (time % 60 === 0) {
@@ -394,6 +405,12 @@ class Handler {
           }
         }
       }, this.options.intervalTime);
+
+      this.setIntervalId(intervalId);
+    });
+    this.player.on('dispose', () => {
+      window.clearInterval(this.getIntervalId());
+      this.setIntervalId(-1);
     });
   }
   /**
