@@ -368,7 +368,10 @@ class Handler {
    * ----------------------
    */
   onLoadedMetaData() {
-    this.player.on('loadedmetadata', () => {});
+    this.player.on('loadedmetadata', () => {
+      this.fgObject.setInitRequest(true);
+      this.callAction();
+    });
   }
   /**
    * on Playing
@@ -383,6 +386,9 @@ class Handler {
         if (!that.isPaused) {
           time++;
           if (time % 60 === 0) {
+            if (that.fgObject.hasIntialRequest) {
+              that.fgObject.setInitRequest(false);
+            }
             time = 0;
             that.callAction();
           }

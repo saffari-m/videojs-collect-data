@@ -15,6 +15,15 @@ class FgObject {
    */
   constructor(player) {
     this.player = player;
+    this.hasIntialRequest = false;
+  }
+  /**
+   * Set intial flag for handle custom first request
+   *
+   * @param { boolean } status true|false
+   */
+  setInitRequest(status = false) {
+    this.hasIntialRequest = status;
   }
 
   /**
@@ -30,7 +39,11 @@ class FgObject {
         let value;
 
         try {
-          value = Math.floor(_player.currentTime() / 60);
+          if (this.hasIntialRequest) {
+            value = 9999;
+          } else {
+            value = Math.floor(_player.currentTime() / 60);
+          }
         } catch (e) {
           value = 9999;
         }
@@ -40,7 +53,11 @@ class FgObject {
         let value;
 
         try {
-          value = Math.floor(Math.floor(_player.duration() / 60) / 2);
+          if (this.hasIntialRequest) {
+            value = 7777;
+          } else {
+            value = Math.floor(Math.floor(_player.duration() / 60) / 2);
+          }
         } catch (e) {
           value = 7777;
         }
