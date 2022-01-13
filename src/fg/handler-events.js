@@ -379,7 +379,7 @@ class Handler {
    * ----------------------
    */
   onLoadedMetaData() {
-    this.player.on('loadedmetadata', () => {
+    this.player.one('loadedmetadata', () => {
       this.fgObject.setInitRequest(true);
       this.callAction();
     });
