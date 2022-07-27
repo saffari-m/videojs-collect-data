@@ -64,7 +64,7 @@ class FgObject {
         return value;
       },
       RESOLUTION: () => {
-        return client.get('getCurrentResolution');
+        return client.getDeviceResolution();
       }
     };
   }
