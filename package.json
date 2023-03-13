@@ -1,6 +1,6 @@
 {
   "name": "@filmgardi/videojs-collect-data",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Collect data from client on during watching movie.",
   "main": "dist/videojs-collect-data.cjs.js",
   "module": "dist/videojs-collect-data.es.js",

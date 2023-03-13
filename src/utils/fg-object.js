@@ -65,6 +65,12 @@ class FgObject {
       },
       RESOLUTION: () => {
         return client.getDeviceResolution();
+      },
+      MIN_TO_NOW: () => {
+        if (_player.options_.liveui) {
+          return Math.round(Math.floor(_player.liveTracker.liveCurrentTime() - _player.currentTime()) / 60);
+        }
+        return 0;
       }
     };
   }

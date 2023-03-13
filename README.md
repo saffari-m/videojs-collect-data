@@ -61,7 +61,8 @@ This is the simplest case. Get the script in whatever way you prefer and include
             p3: 'FG-VIDEO_HALF_TIME', // FG-VIDEO_HALF_TIME : get half video duration
             p4: 'FG-VIDEO_CURRENT_TIME', // FG-VIDEO_CURRENT_TIME : get videojs current time
             p5: 'FG-DEVICE_RESOLUTION' // FG-DEVICE_RESOLUTION : get client monitor resolution
-            p6: 'FG-METHOD(${fuid} + "_" + ${fmid})' // FG-METHOD(arguments) : calculate arguments
+            p6: 'FG-METHOD(${fuid} + "_" + ${fmid})', // FG-METHOD(arguments) : calculate arguments
+            p7: 'FG-VIDEO_MIN_TO_NOW', // FG-VIDEO_MIN_TO_NOW : get videojs difference between live time and play time 
             // you can use static value and `params` inside parameters in your arguments.
             // ex.
             // 1: FG-METHOD(${p1} + ${p2})
@@ -89,7 +90,8 @@ This is the simplest case. Get the script in whatever way you prefer and include
           params: {
             p1: 'FG-VIDEO_HALF_TIME',
             p2: 'FG-VIDEO_CURRENT_TIME',
-            p3: 'FG-DEVICE_RESOLUTION'
+            p3: 'FG-DEVICE_RESOLUTION',
+            p4: 'FG-VIDEO_MIN_TO_NOW',
           }
         }
       },
@@ -104,7 +106,8 @@ This is the simplest case. Get the script in whatever way you prefer and include
         body: {
           params: {
             p1: 'FG-VIDEO_HALF_TIME',
-            p2: 'FG-VIDEO_CURRENT_TIME'
+            p2: 'FG-VIDEO_CURRENT_TIME',
+            p3: 'FG-VIDEO_MIN_TO_NOW',
           }
         }
       }
