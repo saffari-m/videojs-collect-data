@@ -64,7 +64,7 @@ class Handler {
     // if (!options.userId) {
     //   throw new TypeError("userId is require for initialize 'CollectData' plugin.");
     // }
-    if (!options.action && !Object.isObject(options.action)) {
+    if (!options.action && typeof options.action !== 'object') {
       throw new TypeError("action is require for initialize 'CollectData' plugin.");
     }
     if (!FgObject.equal(options.action, ActionModel)) {
